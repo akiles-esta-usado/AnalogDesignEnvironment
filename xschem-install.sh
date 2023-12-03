@@ -28,6 +28,8 @@ xschem_install() {
     ./configure --prefix="${TOOLS}/${XSCHEM_NAME}/${REPO_COMMIT_SHORT}"
     make -j"$(nproc)"
     make install
+
+    link_program "xschem" "${TOOLS}/${XSCHEM_NAME}/${REPO_COMMIT_SHORT}"
 }
 
 # RUN
@@ -37,9 +39,8 @@ add_xschem_dependencies
 install_dependencies
 
 cd $HOME
-export TOOLS=$HOME/tools
-export XSCHEM_REPO_COMMIT="a76dca4f298b2daf74f0e45b85795d87b2e3599e"
-export XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem.git"
-export XSCHEM_NAME="xschem"
 
 xschem_install
+
+cd $HOME
+rm -rf "${XSCHEM_NAME}"
