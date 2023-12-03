@@ -8,7 +8,8 @@ source $SCRIPTPATH/base.sh
 DEPS=
 
 add_netgen_dependencies () {
-    add_if_not_declared ...
+    #add_if_not_declared ...
+    echo ""
 }
 
 netgen_install() {
@@ -21,19 +22,22 @@ netgen_install() {
     make clean
     make -j"$(nproc)"
     make install
+
+    link_program "${NETGEN_NAME}" "${TOOLS}/${NETGEN_NAME}/${REPO_COMMIT_SHORT}"
+}
+
+netgen_clean () {
+    cd $HOME
+    rm -rf "${NETGEN_NAME}"
 }
 
 # RUN
 #####
 
-# add_netgen_dependencies
+add_netgen_dependencies
 install_dependencies
 
 cd $HOME
-export TOOLS=$HOME/tools
-
-export NETGEN_REPO_URL="https://github.com/rtimothyedwards/netgen"
-export NETGEN_REPO_COMMIT="87d8759a6980d297edcb9be6f8661867e4726f9a"
-export NETGEN_NAME="netgen"
 
 netgen_install
+netgen_clean
