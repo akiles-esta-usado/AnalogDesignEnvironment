@@ -55,7 +55,6 @@ python3.10 -m pip install --upgrade pip
 install_python_modules
 
 cd $HOME
-export OPEN_PDKS_VERSION="e0f692f46654d6c7c99fc70a0c94a080dab53571"
 export SCRIPT_DIR=$PWD
 
 volare_install

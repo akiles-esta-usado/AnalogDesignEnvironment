@@ -44,7 +44,7 @@ netgen-install: logdir
 
 
 ngspice-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/ngspice-install.sh; exec bash" | tee $(NETGEN_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/ngspice-install.sh; exec bash" | tee $(NGSPICE_LOG)
 
 
 xschem-install: logdir
