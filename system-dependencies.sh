@@ -202,9 +202,9 @@ config_timezone
 DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends software-properties-common
 add-apt-repository -y ppa:deadsnakes/ppa
 
-nala_installation
+# nala_installation
 add_system_dependencies
 
 install_dependencies
 
-# add_python_link
+add_python_link
