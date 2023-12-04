@@ -46,3 +46,17 @@ https://tutorial.easybuild.io/files/EasyBuild-EESSI-UK-workshop-202304.pdf
 
 
 p 30: Configuración de EasyBuild.
+
+
+
+## TODO
+
+Hay que agregar más métodos de validación para que el sistema no se compile si está malo.
+
+~~~
+<some bash command>
+if [ $? -ne 0 ]; then
+    echo "Error code different than 0"
+    exit 1
+fi
+~~~

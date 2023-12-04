@@ -18,11 +18,13 @@ NGSPICE_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-ngspice.log
 KLAYOUT_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-klayout.log
 VOLARE_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-volare.log
 DOCKER_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-docker.log
+ENVIRONMENT_LOG=$(LOGDIR)/$(TIMESTAMP_TIME)-design-environment.log
 
 
 DOCKER_GRAPHICS=-e DISPLAY -e WAYLAND_DISPLAY -e XDG_RUNTIME_DIR -v /tmp/.X11-unix:/tmp/.X11-unix:ro --net=host -v /home/$(USER)/.Xauthority:/root/.Xauthority:ro
 DOCKER_RUN=docker run -it --rm -v $(PWD):/workdir --security-opt seccomp=unconfined $(DOCKER_GRAPHICS)
 
+CMD_ADD_VOLARE=/workdir/system-dependencies.sh; /workdir/volare-install.sh; /workdir/volare-patch-gf180.sh; /workdir/volare-patch-sky130.sh
 
 .PHONY: logdir
 logdir:
@@ -36,27 +38,27 @@ mount-install:
 
 
 volare-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/volare-install.sh; /workdir/volare-patch-gf180.sh; /workdir/volare-patch-sky130.sh; exec bash" | tee $(VOLARE_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "$(CMD_ADD_VOLARE); exec bash" | tee $(VOLARE_LOG)
 
 
 netgen-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/netgen-install.sh; exec bash" | tee $(NETGEN_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "$(CMD_ADD_VOLARE); /workdir/netgen-install.sh; exec bash" | tee $(NETGEN_LOG)
 
 
 ngspice-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/ngspice-install.sh; exec bash" | tee $(NGSPICE_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "$(CMD_ADD_VOLARE); /workdir/ngspice-install.sh; exec bash" | tee $(NGSPICE_LOG)
 
 
 xschem-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/xschem-install.sh; exec bash" | tee $(XSCHEM_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "$(CMD_ADD_VOLARE); /workdir/ngspice-install.sh; /workdir/xschem-install.sh; exec bash" | tee $(XSCHEM_LOG)
 
 
 klayout-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/klayout-install.sh; exec bash" | tee $(KLAYOUT_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "$(CMD_ADD_VOLARE); /workdir/klayout-install.sh; exec bash" | tee $(KLAYOUT_LOG)
 
 
 magic-install: logdir
-	$(DOCKER_RUN) ubuntu:20.04 bash -c "/workdir/system-dependencies.sh; /workdir/magic-install.sh; exec bash" | tee $(MAGIC_LOG)
+	$(DOCKER_RUN) ubuntu:20.04 bash -c "$(CMD_ADD_VOLARE); /workdir/netgen-install.sh; /workdir/magic-install.sh; exec bash" | tee $(MAGIC_LOG)
 
 
 xeyes:
@@ -65,3 +67,6 @@ xeyes:
 
 docker:
 	docker build . --tag akilesalreadytaken/test-design-environment | tee $(DOCKER_LOG)
+
+environment:
+	$(DOCKER_RUN) akilesalreadytaken/test-design-environment bash -c "source /workdir/.bashrc; exec bash" | tee $(ENVIRONMENT_LOG)

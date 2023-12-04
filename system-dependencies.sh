@@ -37,12 +37,14 @@ add_system_dependencies () {
     
     add_if_not_declared xterm
     add_if_not_declared gedit
+    add_if_not_declared vim
 
     add_if_not_declared python3.10
     add_if_not_declared python3.10-dev
     add_if_not_declared python3.10-venv
     # add_if_not_declared xz
     # add_if_not_declared gnu-free-fonts
+    add_if_not_declared fonts-freefont-ttf
     # add_if_not_declared vim
     # add_if_not_declared jupyter-notebook
 
@@ -62,14 +64,11 @@ add_system_dependencies () {
     add_if_not_declared tk8.6-dev
     add_if_not_declared flex
     add_if_not_declared bison
+    add_if_not_declared gawk
 
     # add_if_not_declared gcc
     # add_if_not_declared make
     # add_if_not_declared python
-
-    # add_if_not_declared autoconf
-    # add_if_not_declared automake
-    # add_if_not_declared bison
         
     # # E: Unable to locate package boost169-devel
     # # E: Unable to locate package boost169-static
@@ -101,8 +100,7 @@ add_system_dependencies () {
     # add_if_not_declared curl
     # add_if_not_declared devtoolset-8
     # add_if_not_declared devtoolset-8-libatomic-devel
-    # add_if_not_declared flex
-    # add_if_not_declared gawk
+    
     # add_if_not_declared gdb
     # add_if_not_declared gettext
     # add_if_not_declared gettext-devel
