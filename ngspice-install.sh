@@ -8,11 +8,16 @@ source $SCRIPTPATH/base.sh
 DEPS=
 
 add_ngspice_dependencies () {
-    add_if_not_declared ...
+    add_if_not_declared autoconf
+    add_if_not_declared automake
+    add_if_not_declared libtool
+    add_if_not_declared libxaw7-dev
 }
 
 ngspice_install() {
     REPO_COMMIT_SHORT=$(echo "$NGSPICE_REPO_COMMIT" | cut -c 1-7)
+
+    rm -rf "${NGSPICE_NAME}"
 
     git clone --filter=blob:none "${NGSPICE_REPO_URL}" "${NGSPICE_NAME}"
     cd "${NGSPICE_NAME}"
@@ -55,6 +60,13 @@ ngspice_install() {
         # Copy OSDI PSP model for IHP
         cp "$PDK_ROOT"/ihp-sg13g2/libs.tech/ngspice/openvaf/psp103_nqs.osdi "${TOOLS}"/"${NGSPICE_NAME}"/"${REPO_COMMIT_SHORT}"/lib/ngspice/psp103.osdi
     fi
+
+    link_program "${NGSPICE_NAME}" "${TOOLS}/${NGSPICE_NAME}/${REPO_COMMIT_SHORT}"
+}
+
+ngspice_clean () {
+    cd $HOME
+    rm -rf "${NGSPICE_NAME}"
 }
 
 # RUN
@@ -64,8 +76,6 @@ add_ngspice_dependencies
 install_dependencies
 
 cd $HOME
-export NGSPICE_REPO_URL="https://git.code.sf.net/p/ngspice/ngspice"
-export NGSPICE_REPO_COMMIT="ngspice-41"
-export NGSPICE_NAME="ngspice"
 
 ngspice_install
+ngspice_clean

@@ -65,8 +65,8 @@ xeyes:
 	$(DOCKER_RUN) stefanscherer/xeyes
 
 
-docker:
+docker: logdir
 	docker build . --tag akilesalreadytaken/test-design-environment | tee $(DOCKER_LOG)
 
-environment:
+environment: logdir
 	$(DOCKER_RUN) akilesalreadytaken/test-design-environment bash -c "source /workdir/.bashrc; exec bash" | tee $(ENVIRONMENT_LOG)

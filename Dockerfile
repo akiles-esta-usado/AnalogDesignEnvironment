@@ -38,3 +38,8 @@ RUN /workdir/magic-install.sh
 
 COPY ./klayout-install.sh /workdir/klayout-install.sh
 RUN /workdir/klayout-install.sh
+
+# Do final modifications
+
+COPY ./final-patch.sh /workdir/final-patch.sh
+RUN /workdir/final-patch.sh
