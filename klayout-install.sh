@@ -34,17 +34,42 @@ add_klayout_dependencies () {
     add_if_not_declared qtmultimedia5-dev
     add_if_not_declared libqt5multimediawidgets5
     add_if_not_declared libqt5svg5-dev
+
+    # HAVE_CURL=0
+    # libcurl for network access
+    add_if_not_declared libcurl4-openssl-dev
+
+    # HAVE_PNG=0
+    # libpng for png generation
+    #add_if_not_declared libpng-dev
+
+    # HAVE_EXPAT=0
+    # libexpat for xml parsing
+    #add_if_not_declared libexpat1-dev
 }
 
 klayout_install() {
     REPO_COMMIT_SHORT=$(echo "$KLAYOUT_REPO_COMMIT" | cut -c 1-7)
+
+    rm -rf "${KLAYOUT_NAME}"
 
     git clone --filter=blob:none "${KLAYOUT_REPO_URL}" "${KLAYOUT_NAME}"
     cd "${KLAYOUT_NAME}"
     git checkout "${KLAYOUT_REPO_COMMIT}"
     prefix=${TOOLS}/${KLAYOUT_NAME}/${REPO_COMMIT_SHORT}
     mkdir -p "$prefix"
-    ./build.sh -j"$(nproc)" -prefix "$prefix" -without-qtbinding
+
+    # Not sure if this is necesary
+    #ADDITIONAL_FLAGS="-release -libexpat -libcurl -libpng"
+    ADDITIONAL_FLAGS=""
+    ./build.sh -j"$(nproc)" -prefix "$prefix" -without-qtbinding ${ADDITIONAL_FLAGS}
+
+    link_program "${KLAYOUT_NAME}" "${TOOLS}/${KLAYOUT_NAME}/${REPO_COMMIT_SHORT}"
+}
+
+klayout_clean () {
+    cd $HOME
+    rm -rf "${KLAYOUT_NAME}"
 }
 
 # RUN
@@ -54,9 +79,6 @@ add_klayout_dependencies
 install_dependencies
 
 cd $HOME
-export TOOLS=$HOME/tools
-export KLAYOUT_REPO_URL="https://github.com/KLayout/klayout"
-export KLAYOUT_REPO_COMMIT="44a2aa9ca17c2b1c154f9c410ded063de9ed3e12"
-export KLAYOUT_NAME="klayout"
 
 klayout_install
+klayout_clean

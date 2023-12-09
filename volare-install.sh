@@ -9,9 +9,6 @@ DEPS=
 PYTHON_DEPS=
 
 add_volare_dependencies () {
-    add_if_not_declared python3.10-venv
-    apt-cache search --names-only '^python3.10'
-
     add_pymodule_if_not_declared gdsfactory[cad]
     add_pymodule_if_not_declared volare
     add_pymodule_if_not_declared docopt
@@ -49,8 +46,7 @@ add_volare_dependencies
 install_dependencies
 
 # MOVE TO SYSTEM-DEPENDENCIES.SH
-python3.10 -m ensurepip --upgrade
-python3.10 -m pip install --upgrade pip
+
 
 install_python_modules
 

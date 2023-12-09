@@ -39,9 +39,16 @@ add_system_dependencies () {
     add_if_not_declared gedit
     add_if_not_declared vim
 
-    add_if_not_declared python3.10
-    add_if_not_declared python3.10-dev
-    add_if_not_declared python3.10-venv
+    # add_if_not_declared python3.10
+    # add_if_not_declared python3.10-dev
+    # add_if_not_declared python3.10-venv
+
+    add_if_not_declared python3.9
+    add_if_not_declared python3.9-dev
+    add_if_not_declared python3.9-venv
+    #add_if_not_declared python3.9-pip
+
+
     # add_if_not_declared xz
     # add_if_not_declared gnu-free-fonts
     add_if_not_declared fonts-freefont-ttf
@@ -198,11 +205,14 @@ add_python_link () {
 config_timezone
 
 DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends software-properties-common
-add-apt-repository -y ppa:deadsnakes/ppa
+#add-apt-repository -y ppa:deadsnakes/ppa
 
 # nala_installation
 add_system_dependencies
 
 install_dependencies
 
-add_python_link
+#python3.9 -m ensurepip --upgrade
+python3.9 -m pip install --upgrade pip
+
+# add_python_link

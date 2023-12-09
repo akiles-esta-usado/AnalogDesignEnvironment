@@ -6,7 +6,7 @@ _setup() {
     export EDITOR=gedit
 
     # Environment specific variables
-    export TOOLS=$HOME/tools
+    export TOOLS=/opt/tools
     export PDK_ROOT=$TOOLS/pdks
 
     export OPEN_PDKS_VERSION="e0f692f46654d6c7c99fc70a0c94a080dab53571"
@@ -68,7 +68,7 @@ install_dependencies () {
 }
 
 install_python_modules () {
-    python3.10 -m pip install $PYTHON_DEPS
+    python3.9 -m pip install $PYTHON_DEPS
 }
 
 link_program () {
@@ -78,6 +78,11 @@ link_program () {
 
     mkdir -p $TOOLS/current
     ln -sf $PROGRAM_PATH $TOOLS/current/$PROGRAM_NAME
+    
+    chmod -R a+r $PROGRAM_PATH
+    chmod    a+r $TOOLS
+    chmod    a+r $TOOLS/current
+    chmod    a+r $TOOLS/current/$PROGRAM_NAME
 }
 
 _setup
